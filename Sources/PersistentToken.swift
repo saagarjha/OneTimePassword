@@ -32,19 +32,19 @@ public struct PersistentToken: Equatable, Hashable {
     /// A `Token` stored in the keychain.
     public let token: Token
     /// The keychain's persistent identifier for the saved token.
-    public let identifier: Data
+    public let account: String
 
     /// Initializes a new `PersistentToken` with the given properties.
-    internal init(token: Token, identifier: Data) {
+    internal init(token: Token, account: String) {
         self.token = token
-        self.identifier = identifier
+        self.account = account
     }
 
     /// A hash value for the persistent token, providing `Hashable` conformance.
     public var hashValue: Int {
         // Since we expect every `PersistentToken`s identifier to be unique, the identifier's hash
         // value makes a simple and adequate hash value for the struct as a whole.
-        return identifier.hashValue
+        return account.hashValue
     }
 }
 
