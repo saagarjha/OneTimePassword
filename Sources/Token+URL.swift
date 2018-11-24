@@ -36,6 +36,7 @@ public extension Token {
             issuer: issuer,
             factor: generator.factor,
             algorithm: generator.algorithm,
+            secret: generator.secret,
             digits: generator.digits
         )
     }
@@ -115,7 +116,7 @@ private func algorithmFromString(_ string: String) throws -> Generator.Algorithm
     }
 }
 
-private func urlForToken(name: String, issuer: String, factor: Generator.Factor, algorithm: Generator.Algorithm, digits: Int) throws -> URL {
+private func urlForToken(name: String, issuer: String, factor: Generator.Factor, algorithm: Generator.Algorithm, secret: Data, digits: Int) throws -> URL {
     var urlComponents = URLComponents()
     urlComponents.scheme = kOTPAuthScheme
     urlComponents.path = "/" + name
@@ -124,6 +125,7 @@ private func urlForToken(name: String, issuer: String, factor: Generator.Factor,
         URLQueryItem(name: kQueryAlgorithmKey, value: stringForAlgorithm(algorithm)),
         URLQueryItem(name: kQueryDigitsKey, value: String(digits)),
         URLQueryItem(name: kQueryIssuerKey, value: issuer),
+        URLQueryItem(name: kQuerySecretKey, value: MF_Base32Codec.base32String(from: secret))
     ]
 
     switch factor {
